@@ -165,7 +165,7 @@ export function drawWorld(ctx, state) {
     }
     if (g.state === 'alert') pill(ctx, g.x, g.y - 48, '!', '#ffffff', 'rgba(214,32,24,0.92)', 19);
     else if (g.suspicion >= 0.38) pill(ctx, g.x, g.y - 48, '?', '#1c1408', 'rgba(255,176,58,0.95)', 19);
-    if (g.say && state.time < g.say.until) bubble(ctx, g.x, g.y - 58, g.say.text);
+    if (g.say && state.time < g.say.until) bubble(ctx, g.x, g.y - 68, g.say.text);
   }
 
   // The lifter. A soft ring shows the noise your pace is making.

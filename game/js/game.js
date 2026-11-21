@@ -197,10 +197,11 @@ function updatePlayer(state, dt) {
     }
   }
 
-  // Gadgets and interaction.
-  if (input.mouse.clicked) throwCoin(state, input.mouse.x, input.mouse.y);
-  if (input.pressed.has('KeyQ')) dropSmoke(state);
-  if (input.pressed.has('KeyE')) {
+  // Gadgets and interaction. Each one-shot input is consumed as it fires, so a frame that
+  // runs several fixed steps cannot throw two coins for one click.
+  if (input.mouse.clicked) { input.mouse.clicked = false; throwCoin(state, input.mouse.x, input.mouse.y); }
+  if (input.pressed.delete('KeyQ')) dropSmoke(state);
+  if (input.pressed.delete('KeyE')) {
     for (let oy = -1; oy <= 1; oy += 1) {
       for (let ox = -1; ox <= 1; ox += 1) {
         if (state.level.map[ty + oy]?.[tx + ox] === 'g') {

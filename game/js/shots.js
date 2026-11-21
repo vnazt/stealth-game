@@ -62,7 +62,7 @@ export function stageShot(state, name) {
     place(state, 'MIRA', 12, 11, 0, 1, 'alert');
     speak(state, 'MIRA', 'Thief! There!');
     stepRing(state, 11, 11, 0.3);
-    place(state, 'BEX', 13, 8, Math.PI / 2, 0.3);
+    place(state, 'BEX', 13, 7, Math.PI / 2, 0.3);
     place(state, 'TOMAS', 25, 9, Math.PI, 0.85, 'suspicious');
     speak(state, 'TOMAS', 'Hey— who goes there?');
     place(state, 'WREN-KEEPER', 10, 18, 0, 0);
@@ -73,7 +73,7 @@ export function stageShot(state, name) {
     putPlayer(state, 16, 11, false, 0.92, 0);
     stepRing(state, 15, 11, 0.15);
     stepRing(state, 14, 11, 0.42);
-    state.tags.push({ x: puff.x, y: puff.y - 78, text: 'SMOKE — HIS CONE DIES IN IT', until: 9999 });
+    state.tags.push({ x: puff.x - 150, y: puff.y - 70, text: 'SMOKE — HIS CONE DIES IN IT', until: 9999 });
     state.banner = { text: 'SPOTTED BY WARDEN MIRA — BREAK LINE OF SIGHT AND HIDE', until: 9999, bad: true };
     return;
   }
@@ -87,8 +87,9 @@ export function stageShot(state, name) {
     place(state, 'CORVIN', 14, 9, 0, 0);
     place(state, 'BEX', 22, 10, Math.PI / 2, 0);
     putPlayer(state, 25, 19, false, 0.5, 0);
+    state.playerNoiseR = 0; // at the hatch, standing still: no noise ring on the results screen
     state.callouts = [];
-    const tiles = [[1, 1], [8, 1], [12, 3], [12, 7], [16, 9], [20, 9], [23, 10], [24, 13], [22, 16], [25, 19]];
+    const tiles = [[1, 1], [8, 1], [12, 3], [12, 7], [16, 9], [20, 9], [23, 10], [24, 13], [21, 16], [23, 18], [25, 19]];
     state.route = tiles.map(([tx, ty]) => tileCenter(tx, ty));
     state.result = {
       title: 'CLEAN GETAWAY', subtitle: 'Heist 1 · The Apprentice Loft — the Brass Orrery lifted',
@@ -125,5 +126,5 @@ export function stageShot(state, name) {
   place(state, 'JUNO', 16, 15, Math.PI, 0);
   state.cameras[0].dir = Math.PI / 2 + 0.35;
   putPlayer(state, 17, 2, true, 0.2, 2.6);
-  state.callouts.push({ tx: 19, ty: 1, text: 'YOU — IN THE BLIND WEDGE, BEHIND THE CRATES' });
+  state.callouts.push({ tx: 17, ty: 4, text: 'YOU — IN THE BLIND WEDGE, BEHIND THE CRATES' });
 }

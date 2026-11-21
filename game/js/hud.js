@@ -121,7 +121,7 @@ export function drawHUD(ctx, state) {
   ctx.font = '700 14px system-ui, sans-serif';
   ctx.fillText(`◉ COINS ×${state.coinsLeft}      ▓ SMOKE ×${state.smokesLeft}`, x + 12, y + 38);
   ctx.fillStyle = state.level.cutters ? PALETTE.ink : PALETTE.inkDim;
-  ctx.fillText(state.level.cutters ? '✂ BOLT CUTTERS — E at a chained gate' : '✂ bolt cutters: not on this heist', x + 12, y + 59);
+  ctx.fillText(state.level.cutters ? '✂ BOLT CUTTERS — E cuts gates' : '✂ bolt cutters: not on this heist', x + 12, y + 59);
   y += 76;
   // Heist progress.
   panel(ctx, x, y, w, 60, 'THE FIVE HEISTS');
