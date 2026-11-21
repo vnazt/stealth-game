@@ -4,7 +4,7 @@
 [![rank](https://make.fun/badge/best-stealth-game-20261121-1759/vnazt/stealth-game/rank.svg)](https://make.fun/bounty/best-stealth-game-20261121-1759/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=best-stealth-game-20261121-1759)
 [![reward](https://make.fun/badge/best-stealth-game-20261121-1759/vnazt/stealth-game/reward.svg)](https://make.fun/bounty/best-stealth-game-20261121-1759?utm_source=github&utm_medium=readme&utm_campaign=best-stealth-game-20261121-1759)
 
-**Steal the clockmakers' masterworks by night: 5 heists, 16 wardens, 28 treasures, 3 gadgets.**
+**Steal the clockmakers' masterworks by night: 5 heists, 19 wardens, 28 treasures, 3 gadgets.**
 
 A top-down 2D stealth heist game in vanilla JavaScript and canvas — no libraries, no network.
 Sneak the five halls of the clockmakers' guildhall as Wren, the lifter: learn each warden's

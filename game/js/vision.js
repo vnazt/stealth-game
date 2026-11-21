@@ -1,6 +1,6 @@
 // vision.js — line of sight and vision-cone geometry: what a warden or camera can actually see.
 import { TILE, FIELD } from './config.js';
-import { tileAt, blocksSight } from './levels.js';
+import { tileAt, blocksSight, blocksMove } from './levels.js';
 
 export function tileCenter(tx, ty) {
   return { x: FIELD.x + (tx + 0.5) * TILE, y: FIELD.y + (ty + 0.5) * TILE };
@@ -28,7 +28,7 @@ export function losClear(level, x0, y0, x1, y1, crouched = false, smoke = []) {
   return true;
 }
 
-/** The visible cone as a polygon: rays fanned across the field of view, each clipped by walls. */
+/** The visible cone as a polygon: rays fanned across the field of view, each clipped by walls and smoke. */
 export function conePolygon(level, x, y, dir, range, halfAngle, smoke = []) {
   const rays = 30;
   const points = [{ x, y }];
@@ -41,6 +41,11 @@ export function conePolygon(level, x, y, dir, range, halfAngle, smoke = []) {
       const py = y + Math.sin(a) * ((s / steps) * range);
       const { tx, ty } = tileOf(px, py);
       if (blocksSight(tileAt(level, tx, ty))) { d = ((s - 0.5) / steps) * range; break; }
+      let inSmoke = false;
+      for (const puff of smoke) {
+        if (Math.hypot(px - puff.x, py - puff.y) < puff.r * 0.92) { inSmoke = true; break; }
+      }
+      if (inSmoke) { d = ((s - 0.5) / steps) * range; break; }
     }
     points.push({ x: x + Math.cos(a) * d, y: y + Math.sin(a) * d });
   }
@@ -62,8 +67,7 @@ export function moveActor(level, actor, dx, dy) {
     const corners = [[nx - r, ny - r], [nx + r, ny - r], [nx - r, ny + r], [nx + r, ny + r]];
     for (const [cx, cy] of corners) {
       const { tx, ty } = tileOf(cx, cy);
-      const ch = tileAt(level, tx, ty);
-      if (ch === '#' || ch === 'C' || ch === 'L' || ch === 'g') return false;
+      if (blocksMove(tileAt(level, tx, ty))) return false;
     }
     return true;
   };

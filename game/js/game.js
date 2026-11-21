@@ -76,7 +76,7 @@ export function loadLevel(state, index) {
 export function newState() {
   const state = {
     screen: 'title', paused: false, time: 0, closeCalls: 0, coinsThrown: 0,
-    totals: { loot: 0, lootTotal: 0, spotted: 0, time: 0 },
+    totals: { loot: 0, lootTotal: 0, spotted: 0, time: 0, masterworks: 0 },
     result: null,
   };
   loadLevel(state, 0);
@@ -94,6 +94,8 @@ function gradeFor(spotted, loot, lootTotal) {
 
 function levelResult(state, title, subtitle) {
   const loot = state.lootTaken, total = state.lootTotal;
+  const treasuresTonight = LEVELS.slice(0, state.levelIndex + 1)
+    .reduce((n, def) => n + def.map.join('').split('').filter((c) => c === 'v').length, 0);
   return {
     title, subtitle,
     grade: gradeFor(state.levelSpotted, loot, total),
@@ -105,6 +107,11 @@ function levelResult(state, title, subtitle) {
       ['Close calls', String(state.closeCalls)],
       ['Coins thrown', String(state.coinsThrown)],
       ['Time in the hall', fmtTime(state.time - state.levelTime0)],
+    ],
+    campaign: [
+      ['Masterworks tonight', `${state.totals.masterworks} / ${LEVELS.length}`],
+      ['Treasures tonight', `${state.totals.loot} / ${treasuresTonight}`],
+      ['Alarms tonight', String(state.totals.spotted)],
     ],
     verdict: state.levelSpotted === 0
       ? 'No warden can say the hall was entered. The masterwork simply is not there any more.'
@@ -121,6 +128,7 @@ function finalResult(state) {
     title: 'THE NIGHT’S LEDGER', subtitle: 'All five masterworks, one quiet lifter',
     grade: gradeFor(t.spotted, t.loot, t.lootTotal),
     level: state.level, route: state.route.slice(),
+    campaign: [],
     lines: [
       ['Masterworks stolen', '5 / 5'],
       ['Treasures lifted', `${t.loot} / ${t.lootTotal}`],
@@ -141,6 +149,12 @@ function completeLevel(state) {
   state.totals.lootTotal += state.lootTotal;
   state.totals.spotted += state.levelSpotted;
   state.totals.time = state.time;
+  if (state.hasObjective) state.totals.masterworks += 1;
+  // Freeze the hall exactly as it was left: no live rings, tags or callouts on the results screen.
+  state.noises = [];
+  state.tags = [];
+  state.callouts = [];
+  state.banner = null;
   state.result = levelResult(state, 'CLEAN GETAWAY', `${state.level.name} — ${state.level.objectiveName} lifted`);
   state.screen = 'complete';
 }
@@ -244,7 +258,7 @@ function drawTitle(state) {
   ctx.fillText('HUSHWORK', VIEW.width / 2, 268);
   ctx.fillStyle = '#ffe9b8';
   ctx.font = '600 19px system-ui, sans-serif';
-  ctx.fillText('Steal the clockmakers’ masterworks by night: 5 heists, 16 wardens, 28 treasures, 3 gadgets', VIEW.width / 2, 306);
+  ctx.fillText('Steal the clockmakers’ masterworks by night: 5 heists, 19 wardens, 28 treasures, 3 gadgets', VIEW.width / 2, 306);
   ctx.fillStyle = '#9aa5ba';
   ctx.font = '15px system-ui, sans-serif';
   ctx.fillText('Wardens patrol by lamplight. Their cones stop at crates and walls. Stay dark, stay slow, stay unseen.', VIEW.width / 2, 342);

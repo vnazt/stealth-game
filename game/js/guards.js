@@ -12,7 +12,15 @@ export function createGuard(def) {
     wp: 1 % def.path.length, speedScale: def.speed ?? 1,
     suspicion: 0, state: 'patrol', target: null, faceDir: 0,
     lookTimer: 0, pauseTimer: 0, unseenTimer: 0, lastSeen: null, nearMissed: false,
+    say: null, stepAcc: 0, lastX: start.x, lastY: start.y,
   };
+}
+
+const STARTLED = ['What was that?', 'Eh? Something moved…', 'Who’s creeping about?', 'Hm? A draught, or…?'];
+
+/** Give a warden a spoken line for a few seconds — the hall is not silent. */
+export function say(state, g, text, seconds = 2.4) {
+  g.say = { text, until: state.time + seconds };
 }
 
 export function createCamera(def) {
@@ -69,11 +77,13 @@ export function updateGuard(state, g, dt) {
 
   if (g.suspicion >= GUARD.spotAt && g.state !== 'alert') {
     g.state = 'alert';
+    say(state, g, 'Thief! There!', 2.6);
     state.events.push({ type: 'spotted', who: `WARDEN ${g.name}` });
   } else if (g.state === 'patrol' && g.suspicion >= GUARD.suspectAt) {
     g.state = 'suspicious';
     g.lookTimer = 0.9;
     g.faceDir = g.lastSeen ? Math.atan2(g.lastSeen.y - g.y, g.lastSeen.x - g.x) : g.dir;
+    say(state, g, STARTLED[Math.floor(state.time + g.x) % STARTLED.length]);
   } else if (g.state === 'suspicious' && g.suspicion >= 0.62) {
     g.state = 'investigate';
     g.target = g.lastSeen;
@@ -108,7 +118,7 @@ export function updateGuard(state, g, dt) {
       if (moveToward(state, g, g.target.x, g.target.y, GUARD.investigateSpeed * g.speedScale, dt)) {
         g.lookTimer += dt;
         g.dir += Math.sin(state.time * 2.1 + g.y) * 0.8 * dt;
-        if (g.lookTimer > 1.6) { g.state = 'return'; g.target = null; }
+        if (g.lookTimer > 1.6) { g.state = 'return'; g.target = null; say(state, g, 'Nothing here. Bah.'); }
       }
       break;
     }
@@ -120,6 +130,7 @@ export function updateGuard(state, g, dt) {
         g.state = 'investigate';
         g.target = g.lastSeen;
         g.lookTimer = 0;
+        say(state, g, 'Gone. Slipped away…');
         state.events.push({ type: 'recovered' });
       }
       break;
@@ -139,6 +150,17 @@ export function updateGuard(state, g, dt) {
       break;
     }
     default: break;
+  }
+  // Footsteps: a moving warden sheds a small ring every stride, so ears can place him.
+  const moved = Math.hypot(g.x - g.lastX, g.y - g.lastY);
+  g.lastX = g.x; g.lastY = g.y;
+  if (moved > 0.01 && g.state !== 'suspicious') {
+    g.stepAcc += moved;
+    if (g.stepAcc > 16) {
+      g.stepAcc = 0;
+      state.noises.push({ x: g.x, y: g.y, r: 17, age: 0, life: 0.6, kind: 'step', tag: '' });
+      if (state.noises.length > 48) state.noises.splice(0, state.noises.length - 48);
+    }
   }
   return seen;
 }
