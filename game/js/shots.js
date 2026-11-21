@@ -34,7 +34,7 @@ export function stageShot(state, name) {
     state.noises.push({ x: coin.x, y: coin.y, r: 4.2 * 32, age: 0.4, life: 0.9, tag: '' });
     putPlayer(state, 5, 8, true, 0.18, 0.2);
     state.tags.push({ x: coin.x, y: coin.y - 30, text: 'HEARD THE COIN', until: 9999 });
-    state.tags.push({ x: state.player.x, y: state.player.y - 32, text: 'NEAR MISS · 62%', until: 9999 });
+    state.tags.push({ x: state.player.x, y: state.player.y - 56, text: 'NEAR MISS · 62%', until: 9999 });
     return;
   }
   if (name === 'alarm') {
@@ -86,5 +86,6 @@ export function stageShot(state, name) {
   place(state, 'ORIN', 23, 13, Math.PI, 0.12);
   state.cameras[0].dir = Math.PI / 2 + 0.35;
   putPlayer(state, 17, 3, true, 0.2, 2.6);
-  state.callouts.push({ tx: 17, ty: 2, text: 'YOU: hidden where the cone stops at the crates' });
+  state.callouts = state.callouts.filter((c) => !c.text.startsWith('BRASS EYE'));
+  state.callouts.push({ tx: 12, ty: 1, text: 'YOU: hidden where the cone stops at the crates' });
 }

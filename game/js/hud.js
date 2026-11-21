@@ -139,9 +139,9 @@ export function drawHUD(ctx, state) {
   const notes = [
     ['amber cone', 'vision — stopped by walls & crates'],
     ['red cone', 'a warden who has your scent'],
-    ['blue cone', 'brass eye camera — sweeps, blind behind'],
+    ['blue cone', 'camera — sweeps; blind behind it'],
     ['crates', 'full cover: sight cannot pass'],
-    ['low cover', 'sneak (crouch) to vanish behind it'],
+    ['low cover', 'crouch (sneak) to vanish behind'],
     ['fronds', 'hidden while still or sneaking'],
     ['lamplight', 'seen from across the room'],
     ['dark floor', 'slower to be seen'],
