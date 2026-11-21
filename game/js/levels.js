@@ -43,7 +43,7 @@ export const LEVELS = [
     cameras: [],
     callouts: [
       { tx: 20, ty: 5, text: 'YOU: hidden where the cone stops at the crates' },
-      { tx: 3, ty: 12, text: 'SHADOW FRONDS: hidden while you stay still' },
+      { tx: 6, ty: 12, text: 'SHADOW FRONDS: hidden while you stay still' },
       { tx: 24, ty: 19, text: 'EXIT HATCH' },
     ],
   },
