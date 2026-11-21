@@ -1,8 +1,8 @@
 // config.js — every tuning number and the palette for Hushwork, in one place.
 export const VIEW = { width: 1280, height: 800 };
-export const TILE = 32;
-export const FIELD = { x: 10, y: 56, cols: 29, rows: 21 };
-export const RAIL = { x: 950, width: 320 };
+export const TILE = 34;
+export const FIELD = { x: 8, y: 56, cols: 29, rows: 21 };
+export const RAIL = { x: 1002, width: 270 };
 export const STEP = 1 / 60;
 
 export const PLAYER = {
@@ -41,18 +41,22 @@ export const SMOKE_SECONDS = 4.5;
 export const MAX_STRIKES = 3;
 
 export const PALETTE = {
-  bg: '#0b0e14',
-  floor: '#232733',
-  floorAlt: '#262b38',
+  bg: '#0a0c12',
+  floor: '#262b38',
+  floorAlt: '#2a3040',
   darkFloor: '#171b26',
-  wall: '#3d4356',
-  wallTop: '#4c5468',
-  crate: '#8a6a42',
-  crateEdge: '#a8834f',
-  lowCover: '#5d7350',
-  lowCoverEdge: '#76916a',
+  wall: '#46516a',
+  wallTop: '#5d6b8a',
+  crate: '#966f3d',
+  crateEdge: '#bb9050',
+  barrel: '#6e5136',
+  barrelEdge: '#96754c',
+  shelf: '#54432e',
+  shelfEdge: '#7a5f3d',
+  lowCover: '#648052',
+  lowCoverEdge: '#84a56f',
   grass: '#2e4a38',
-  grassBlade: '#47755a',
+  grassBlade: '#4d8262',
   lampGlow: 'rgba(255,190,92,',
   lampFloor: '#4a3d28',
   exit: '#3fd97c',
